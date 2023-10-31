@@ -2,6 +2,7 @@ from comet2.comet_model import PretrainedCometModel
 import pickle
 import random
 
+# model_path = "atomic_pretrained_model_openai-gpt"
 comet_model = PretrainedCometModel(device=0)
 
 
@@ -77,19 +78,22 @@ def getDict(file_name, mode):
         saveFile(file_name + "_nd_dict", nd_dict)
         saveFile(file_name + "_it_dict", it_dict)
 
-
-getDict("male_masked_subj.txt", "xAttr")
-getDict("female_masked_subj.txt","xAttr")
-
-getDict("male_masked_subj.txt","xReact")
-getDict("female_masked_subj.txt","xReact")
-
-getDict("male_two_and_above_subj.txt","oReact")
-getDict("female_two_and_above_subj.txt","oReact")
-
-getDict("male_two_and_above_obj.txt","oReact")
 getDict("female_two_and_above_obj.txt","oReact")
 
-getDict("male_masked_subj.txt","motivation")
-getDict("female_masked_subj.txt","motivation")
-getDict("female_two_and_above_obj.txt")
+
+# getDict("male_masked_subj.txt", "xAttr")
+# getDict("female_masked_subj.txt","xAttr")
+
+# # react = mental states
+# getDict("male_masked_subj.txt","xReact")
+# getDict("female_masked_subj.txt","xReact")
+
+# getDict("male_two_and_above_subj.txt","oReact")
+# getDict("female_two_and_above_subj.txt","oReact")
+
+# getDict("male_two_and_above_obj.txt","oReact")
+# getDict("female_two_and_above_obj.txt","oReact")
+
+# getDict("male_masked_subj.txt","motivation")
+# getDict("female_masked_subj.txt","motivation")
+# getDict("female_two_and_above_obj.txt")

@@ -128,14 +128,14 @@ pickle.dump("1", filehandler)
 
 # directs = ["Generated/generated","humanWritten/humanwritten"]
 # for head in directs:
-compute("male_masked_subj.txt_at_dict")
-compute("female_masked_subj.txt_at_dict")
+# compute("male_masked_subj.txt_at_dict")
+# compute("female_masked_subj.txt_at_dict")
 
-compute("male_masked_subj.txt_xr_dict")
-compute("female_masked_subj.txt_xr_dict")
+# compute("male_masked_subj.txt_xr_dict")
+# compute("female_masked_subj.txt_xr_dict")
 
-compute("male_two_and_above_obj.txt_or_dict")
+# compute("male_two_and_above_obj.txt_or_dict")
 compute("female_two_and_above_obj.txt_or_dict")
 
-compute("male_two_and_above_subj.txt_or_dict")
-compute("female_two_and_above_subj.txt_or_dict")
+# compute("male_two_and_above_subj.txt_or_dict")
+# compute("female_two_and_above_subj.txt_or_dict")

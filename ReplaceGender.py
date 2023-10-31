@@ -1,6 +1,16 @@
 import nltk
 from nltk.tag.stanford import StanfordNERTagger
 from allennlp.predictors.predictor import Predictor
+from tqdm import tqdm
+import os
+
+java_path = "" #include java path
+os.environ['JAVAHOME'] = java_path
+jar = "./stanford-ner-2020-11-17/stanford-ner.jar"
+model = "./stanford-ner-2020-11-17/classifiers/english.conll.4class.distsim.crf.ser.gz"
+# jar = '.\\stanford-ner\\stanford-ner.jar'
+# model = '.\\stanford-ner\\classifiers\\english.conll.4class.distsim.crf.ser.gz'
+ner_tagger = StanfordNERTagger(model, jar, encoding='utf8')
 
 predictor = Predictor.from_path(
     "https://storage.googleapis.com/allennlp-public-models/coref-spanbert-large-2020.02.27.tar.gz",cuda_device = 0)
@@ -10,13 +20,9 @@ print("predictor loaded")
 import spacy
 
 nlp = spacy.load('en_core_web_lg')
-import os
 
-java_path = "" #include java path
-os.environ['JAVAHOME'] = java_path
-jar = '.\\stanford-ner\\stanford-ner.jar'
-model = '.\\stanford-ner\\classifiers\\english.conll.4class.distsim.crf.ser.gz'
-ner_tagger = StanfordNERTagger(model, jar, encoding='utf8')
+
+
 
 
 def getPron(para):
@@ -109,11 +115,12 @@ def writeFile(file_name, content):
     a.close()
 
 
-def process(inputf, outputf):
+def process(inputf, outputf, max_lines=None):
     f = open(inputf, "r")
-    for para in f.readlines():
+    for i, para in enumerate(tqdm(f.readlines())):
+        if max_lines and i >= max_lines:
+            break
 
-        #         print(repr(para))
         if (para == "\n"):
             continue
 
@@ -122,7 +129,6 @@ def process(inputf, outputf):
         sts = processed.strip("\n").split('"')
         sts = ("").join(sts)
         if (processed != []):
-            #             for i in sts:
             writeFile(outputf, sts + '\n')
 
 print("Male")

@@ -1,7 +1,9 @@
 from allennlp.predictors.predictor import Predictor
 import allennlp_models.coref
 import sys
+import pdb
 
+pdb.set_trace()
 f_name = sys.argv[1]
 
 f = open(f_name, "r")

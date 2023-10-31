@@ -1,10 +1,10 @@
 import pandas as pd
-df = pd.read_csv('Lexicons of bias - Gender stereotypes.csv')
+# df = pd.read_csv('Lexicons of bias - Gender stereotypes.csv')
 import gensim
 from gensim.models import KeyedVectors
 from gensim.models import Word2Vec
 
-model1 = KeyedVectors.load_word2vec_format('../GoogleNews-vectors-negative300.bin.gz',binary=True)
+model1 = KeyedVectors.load_word2vec_format('/h/brandon/internship/Uncover_implicit_bias/data/GoogleNews-vectors-negative300.bin.gz',binary=True)
 
 from empath import Empath
 lexicon = Empath()
@@ -22,6 +22,8 @@ def get_words(cates):
             if(type(j) is not float):
                 words.append(j)
     return set(words)
+
+# we get lexicons for these keywords
 appearence = ["beautiful","sexual"]
 appear = get_words(appearence)
 power = ["dominant","strong"]
@@ -59,7 +61,7 @@ def load_file(file):
     file.close()
     return words
 
-
+# might need to remove the .wv
 weak_vecs = [model1.wv[i] for i in weak if i in model1]
 power_vecs = [model1.wv[i] for i in power if i in model1]
 appear_vecs = [model1.wv[i] for i in appear if i in model1]
@@ -169,7 +171,7 @@ def getLexiconScore_b5(f1, f2):
     female = load_file(f2)
 
     mm = []
-
+    # iterating through each male lexicon?
     for i in male:
         mm += set(i)
     ff = []
@@ -183,7 +185,8 @@ def getLexiconScore_b5(f1, f2):
     return compute(m, "../0515replotting/" + f1.split("/")[1] + "/" + f1.split("/")[3]) \
         , compute(f, "../0515replotting/" + f2.split("/")[1] + "/" + f2.split("/")[3])
 
-
+# comparing object for generated story vs. human written story
+# ex. different xIntent b/w the two
 directs = ["../Generated/Beam_5/", "../humanWritten/Beam_5/"]
 result = []
 for direct in directs:

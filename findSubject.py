@@ -74,5 +74,5 @@ def process(inputf, outputf):
                 if(len(para)>5):
                     writeFile(outputf + '_obj.txt', para)
 
-process("male_two_and_above.txt","male_two_and_above")
+# process("male_two_and_above.txt","male_two_and_above")
 process("female_two_and_above.txt","female_two_and_above")

@@ -9,10 +9,10 @@ import spacy
 nlp = spacy.load('en_core_web_lg')
 import os
 
-java_path = "C://Program Files//Java//jre1.8.0_281//bin//java.exe"
+java_path = ""
 os.environ['JAVAHOME'] = java_path
-jar = '.\\stanford-ner\\stanford-ner.jar'
-model = '.\\stanford-ner\\classifiers\\english.conll.4class.distsim.crf.ser.gz'
+jar = "./stanford-ner-2020-11-17/stanford-ner.jar"
+model = "./stanford-ner-2020-11-17/classifiers/english.conll.4class.distsim.crf.ser.gz"
 ner_tagger = StanfordNERTagger(model, jar, encoding='utf8')
 
 
