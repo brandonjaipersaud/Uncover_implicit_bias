@@ -14,23 +14,37 @@ intellect = ["intellectual", "intuitive", "imaginative", "knowledgeable", "ambit
 
 import numpy as np
 import math
-def get_words(cates):
-    tmp = df.loc[:,cates].values
-    words = []
-    for i in tmp:
-        for j in i:
+# def get_words(cates):
+#     tmp = df.loc[:,cates].values
+#     words = []
+#     for i in tmp:
+#         for j in i:
 
-            if(type(j) is not float):
-                words.append(j)
-    return set(words)
+#             if(type(j) is not float):
+#                 words.append(j)
+#     return set(words)
 
-# we get lexicons for these keywords
+def get_words(category, seeds, size=100):
+    lexicons = lexicon.create_category(category,seeds, size=size)
+    return lexicons
+    
+
+# we get lexicons for these categories
+# using empath may result in biased lexicons -- i.e. feminine for appearance
+# do further filtering for masculine/feminine terms?
 appearence = ["beautiful","sexual"]
-appear = get_words(appearence)
+# filtered out terms like girly, feminine, masculine -- should be ideally gender neutral
+appearance_lexicons = ['beautiful', 'sexual', 'sexy', 'perfect', 'attractive', 'romantic', 'irresistible', 'unique', 'sweet', 'gorgeous', 'pretty', 'touching', 'pleasing', 'amazing', 'provocative', 'enchanting', 'meaningful', 'sinful', 'intimate', 'poetic', 'desirable', 'flirtatious', 'flattering', 'unattractive', 'innocent', 'cute', 'inappropriate', 'flawless', 'sensitive', 'modest', 'captivating', 'enticing', 'daring', 'incredible', 'creative', 'vulgar', 'alluring', 'weird', 'spontaneous', 'mysterious', 'wonderful', 'cliché', 'addictive', 'dreamy', 'erotic', 'charming', 'cheesy', 'intriguing', 'repulsive', 'adorable', 'extraordinary', 'freaky', 'likeable', 'exotic', 'expressive', 'unbelievable', 'realistic', 'sappy', 'disturbing', 'distracting', 'inspirational', 'shocking', 'outrageous', 'freaky', 'endearing', 'perverted', 'flirty', 'undeniably', 'predictable', 'shy', 'boyish', 'stereotypical', 'good', 'imaginative', 'different', 'inspiring', 'special', 'exquisite', 'quirky', 'fabulous', 'classy', 'real', 'straightforward', 'bold', 'perverted', 'subtle', 'sophisticated', 'freaky', 'lovable', 'heartwarming', 'artsy', 'just_sex', 'insightful']
+# appear = get_words("appearance", appearence)
+print(appear)
 power = ["dominant","strong"]
-power = get_words(power)
+# power = get_words("power", power)
+power_lexicons =  ['strong', 'dominant', 'powerful', 'resilient', 'fierce', 'fearless', 'weak', 'ruthless', 'brave', 'courageous', 'tough', 'stronger', 'submissive', 'vicious', 'independent', 'invincible', 'vulnerable', 'aggressive', 'fragile', 'weakest', 'dangerous', 'possessive', 'lethal', 'stubborn', 'gentle', 'unstoppable', 'formidable', 'confident', 'flexible', 'firm', 'sensitive', 'destructive', 'dominate', 'brutal', 'violent', 'strongest', 'inexperienced', 'human', 'persuasive', 'agile', 'resistant', 'fighter', 'Carpathian', 'overpower', 'potent', 'headstrong', 'experienced', 'deadly', 'skilled', 'selfless', 'delicate', 'ferocious', 'primitive', 'determined', 'daring', 'good_fighter', 'masculine', 'cunning', 'savage', 'rational', 'forceful', 'persistent', 'warrior', 'wise', 'ambitious', 'demanding', 'yet', 'stong', 'feeble', 'hard', 'unpredictable', 'loyal', 'territorial', 'controlled', 'compelling', 'passive', 'superior', 'dependable', 'unbreakable', 'admirable', 'overbearing', 'desirable', 'powerless', 'defiant', 'humble', 'humane', 'fit', 'bloodthirsty', 'intelligent', 'empowered', 'volatile', 'obedient', 'so_much_power', 'compassionate', 'untouchable', 'cruel', 'skillful', 'frail', 'resourceful', 'compulsion']
+print(power)
 weak = ['submissive','weak','dependent','afraid']
-weak = get_words(weak)
+# weak = get_words("weak", weak)
+weak_lexicons = ['weak', 'afraid', 'vulnerable', 'submissive', 'strong', 'powerless', 'dependent', 'defenseless', 'invincible', 'helpless', 'foolish', 'fragile', 'ruthless', 'scared', 'defenceless', 'dominant', 'Yet', 'inexperienced', 'reckless', 'fear', 'dangerous', 'unfit', 'human', 'physically', 'ashamed', 'shameful', 'rational', 'desperate', 'powerful', 'certain', 'fearful', 'fearless', 'selfish', 'unstable', 'brave', 'greedy', 'unhappy', 'independent', 'crippled', 'dependant', 'immune', 'heartless', 'cruel', 'stubborn', 'violent', 'unworthy', 'inferior', 'nuisance', 'useless', 'yet', 'confident', 'Because', 'Though', 'frightened', 'willing', 'attached', 'feared', 'destructive', 'angry', 'hurt', 'wounded', 'mortal', 'weakest', 'careless', 'hopeless', 'irrational', 'cowardly', 'feeble', 'prone', 'harmful', 'susceptible', 'sensitive', 'unwanted', 'obedient', 'tolerant', 'own_person', 'shamed', 'flawed', 'cautious', 'unreasonable', 'aggressive', 'critical', 'mindset', 'desirable', 'determined', 'truly', 'rebellious', 'weakness', 'own_will', 'Yet', 'resilient', 'vicious', 'superior', 'pathetic', 'extreme', 'painful', 'brutal']
+print(weak)
 print("loaded")
 
 from scipy import stats
@@ -93,8 +107,9 @@ def compute(words_clusters, title):
     """ word_clusters = Comet inferences for a given gender
         title = save file 
 
-        computes (1) in the paper
+        computes (1) in the paper -- association score between lexicon (i.e. intellect) and protagonist inferences (i.e. xAttr, xReact, ...)
     """
+    # sum of intel scores between L and x_i
     intel_sum = []
     appear_sum = []
     power_sum = []
@@ -107,8 +122,8 @@ def compute(words_clusters, title):
         # weak
         intel_sims = 0
         appear_sims = 0
+        # computes (1) -- pointwise between L (set of lexicons) and x (a single word)
         for j in intellect:
-
             if (j in model1):
                 intel_sims += model1.similarity(x, j)
         for k in appear:
@@ -142,15 +157,19 @@ def getLexiconScore(f1, f2):
     male = load_file(f1)
     female = load_file(f2)
     if (type(female[0]) is list):
+        # picking 1st beam across all inferences for diff stories. collapsing the lists.
         male = [i[0] for i in male]
         female = [i[0] for i in female]
     if (type(female[0]) is tuple):
+        # not sure that this means
         male = [i[1] for i in male]
         female = [i[1] for i in female]
 
+    # remove inferences with 0 occurrences
     male_removed = Counter(male).most_common(5)
     female_removed = Counter(female).most_common(5)
 
+    # what does this collect?
     male_removed = [i[0] for i in male_removed]
     female_removed = [i[0] for i in female_removed]
 
@@ -173,7 +192,9 @@ def getLexiconScore(f1, f2):
     m = list(filter(lambda a: a != 'none', m))
     f = list(filter(lambda a: a != 'none', f))
 
-    return compute(m, "male"), compute(f, "male")
+    # set of inferences is filtered before running inference
+    # should 2nd param be female?
+    return compute(m, "male"), compute(f, "female")
 
 
 from collections import Counter
@@ -201,6 +222,9 @@ def getLexiconScore_b5(f1, f2):
 # comparing object for generated story vs. human written story
 # ex. different xIntent b/w the two
 directs = ["../Generated/Beam_5/", "../humanWritten/Beam_5/"]
+
+# stores male/female z-scores for each dimension (intelligence, power, ...)
+# result[i][0] = male and result[i][1] = female. i = model vs. human generated story 
 result = []
 for direct in directs:
     if "Beam" in direct:
