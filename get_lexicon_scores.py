@@ -4,7 +4,8 @@ import gensim
 from gensim.models import KeyedVectors
 from gensim.models import Word2Vec
 
-model1 = KeyedVectors.load_word2vec_format('/h/brandon/internship/Uncover_implicit_bias/data/GoogleNews-vectors-negative300.bin.gz',binary=True)
+# better to store on disk and load when needed since this takes long to decompress
+# model1 = KeyedVectors.load_word2vec_format('/h/brandon/internship/Uncover_implicit_bias/data/GoogleNews-vectors-negative300.bin.gz',binary=True)
 
 from empath import Empath
 lexicon = Empath()
@@ -61,6 +62,7 @@ def load_file(file):
     file.close()
     return words
 
+# getting word vectors for the lexicons
 # might need to remove the .wv
 weak_vecs = [model1.wv[i] for i in weak if i in model1]
 power_vecs = [model1.wv[i] for i in power if i in model1]
@@ -69,6 +71,11 @@ intellect_vecs = [model1.wv[i] for i in intellect if i in model1]
 
 
 def calculateSubspace(A, B):
+    """ 
+    computes (2) in the paper -- the power semantic axis
+    avg strong embedding subtracted by avg weak embedding
+    Subspace in this case = a vector in the direction of power
+    """
     A_vecs = [model1.wv[i] for i in A if i in model1]
     B_vecs = [model1.wv[i] for i in B if i in model1]
 
@@ -83,9 +90,15 @@ def calculateSubspace(A, B):
 
 
 def compute(words_clusters, title):
+    """ word_clusters = Comet inferences for a given gender
+        title = save file 
+
+        computes (1) in the paper
+    """
     intel_sum = []
     appear_sum = []
     power_sum = []
+    
     power_subspace = calculateSubspace(power, weak)
 
     for x in words_clusters:
@@ -171,7 +184,7 @@ def getLexiconScore_b5(f1, f2):
     female = load_file(f2)
 
     mm = []
-    # iterating through each male lexicon?
+    # iterating through each male inference (beam 5)?
     for i in male:
         mm += set(i)
     ff = []

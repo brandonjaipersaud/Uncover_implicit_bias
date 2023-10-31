@@ -52,6 +52,7 @@ Download StanfordNERTagger
       ```sh
       python generate_inferences.py
       ```  
+      - does not generate all inferences required by the paper
    
 6. Calculate Valence, arousal scores 
       ```sh
@@ -60,8 +61,11 @@ Download StanfordNERTagger
    
 7. Calculate Intellect, Appearance, Power scores
       ```sh
-      python get_lexicon_average.py
+      python get_lexicon_score.py
       ```  
+      - need to manually download Google word2vec
+      - missing `Lexicons of bias - Gender stereotypes.csv`. This is used in `get_words(list[str])` to get the lexicons of a given list of words.
+      - maybe the filled in lists, contain the lexicons so no need to run `get_words` 
       
       Acknowledgement:
       

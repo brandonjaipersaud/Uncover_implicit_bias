@@ -71,6 +71,7 @@ def getDict(file_name, mode):
     elif mode == "xReact":
         saveFile(file_name + "_xr_dict", xrDict)
     elif mode == "oReact":
+        print(orDict)
         saveFile(file_name + "_or_dict", orDict)
     elif mode == "motivation":
         saveFile(file_name + "_wt_dict", wt_dict)
