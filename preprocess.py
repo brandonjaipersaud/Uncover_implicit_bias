@@ -2,8 +2,9 @@ from allennlp.predictors.predictor import Predictor
 import allennlp_models.coref
 import sys
 import pdb
+from tqdm import tqdm
 
-pdb.set_trace()
+
 f_name = sys.argv[1]
 
 f = open(f_name, "r")
@@ -20,10 +21,12 @@ print(len(txt))
 
 print(txt[:5])
 
-predictor = Predictor.from_path("https://storage.googleapis.com/allennlp-public-models/coref-spanbert-large-2020.02.27.tar.gz",cuda_device=0)
+print('Loading predictor')
+# predictor = Predictor.from_path("https://storage.googleapis.com/allennlp-public-models/coref-spanbert-large-2020.02.27.tar.gz",cuda_device=0)
+predictor = Predictor.from_path("/h/brandon/internship/Uncover_implicit_bias/models/coref-spanbert", cuda_device=0)
 predictor._model = predictor._model.cuda()
 print(predictor.cuda_device)
-print("predictor loaded")
+print("Predictor loaded on device:", predictor.cuda_device)
 
 male = []
 female = []
@@ -55,22 +58,22 @@ malePron = ["He","he","him","Him"]
 femalePron = ["She","she","Her","her"]
 
 cnt = 0
-for para in txt:
+for para in tqdm(txt):
 
     try:
         pron,pron_p = getPron(para)
 
         pron = [" ".join(i) for i in pron]
         if bool(set(pron) & set(malePron)) and not bool(set(pron) & set(femalePron)) :
-            a = open('male.txt', 'a')
+            a = open('male2.txt', 'a')
             a.write(para+"\n")
             a.close()
         elif bool(set(pron) & set(femalePron)) and not bool(set(pron) & set(malePron)):
-            a = open('female.txt', 'a')
+            a = open('female2.txt', 'a')
             a.write(para+"\n")
             a.close()
         else:
-            a = open('unresolved.txt', 'a')
+            a = open('unresolved2.txt', 'a')
             a.write(para+"\n")
             a.close()
 

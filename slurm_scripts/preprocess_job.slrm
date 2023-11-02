@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=preprocess
+#SBATCH --gres=gpu:a40:1
+#SBATCH --qos=normal
+#SBATCH --time=1:00:00
+#SBATCH -c 4
+#SBATCH --mem=32G
+#SBATCH --output=/h/brandon/internship/Uncover_implicit_bias/slurm_logs/slurm-%j.out
+#SBATCH --error=/h/brandon/internship/Uncover_implicit_bias/slurm_logs/slurm-%j.err
+
+# prepare your environment here
+source /scratch/ssd004/scratch/brandon/implicit_biases2/bin/activate 
+
+# put your command here
+python ReplaceGender.py
