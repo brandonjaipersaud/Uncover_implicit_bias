@@ -36,11 +36,16 @@ Download StanfordNERTagger
       ```sh
       python replaceGender.py 
       ```      
+      - taking ~1hr:30mins to run on vector cluster across 2000 lines/stories. 
 3. Extract stories having more than two characters
 
       ```sh
       python extractTwo.py 
       ```  
+      - split data into 2 subsets
+        - 1 = 1 character (protagonist)
+        - 2 = 2 or more characters
+        - for the 2nd subset, use comet to make inferences that require 2 people. Ex. how protagonist's actions affects mental state of others.
    
 4. Classify sentences according to protagonist
       ```sh
