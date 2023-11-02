@@ -131,7 +131,7 @@ def process(inputf, outputf, max_lines=None):
         if (processed != []):
             writeFile(outputf, sts + '\n')
 
-print("Male")
-process("male.txt", "male_masked.txt")
+# print("Male")
+# process("male2.txt", "male_masked_2000.txt", max_lines=2000)
 print("Female")
-process("female.txt", "female_masked.txt")
+process("female2.txt", "female_masked_2000.txt", max_lines=2000)

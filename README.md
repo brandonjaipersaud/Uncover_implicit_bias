@@ -36,7 +36,7 @@ Download StanfordNERTagger
       ```sh
       python replaceGender.py 
       ```      
-      - taking ~1hr:30mins to run on vector cluster across 2000 lines/stories. 
+      - taking ~38mins to run on vector cluster across 2000 lines/stories. 
 3. Extract stories having more than two characters
 
       ```sh
