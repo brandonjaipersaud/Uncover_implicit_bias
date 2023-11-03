@@ -6,6 +6,7 @@ import random
 comet_model = PretrainedCometModel(device=0)
 
 
+
 def writeFile(file_name, content):
     a = open(file_name, 'a')
     a.write(content)
@@ -42,7 +43,7 @@ def getDict(file_name, mode):
 
         if mode == "xAttr":
             inference = comet_model.predict(st, "xAttr", num_beams=5)
-
+            
             attrDict.append(inference)
         elif mode == "xReact":
             xr_inference = comet_model.predict(st, "xReact", num_beams=5)
@@ -89,12 +90,15 @@ getDict("female_two_and_above_obj.txt","oReact")
 # getDict("male_masked_subj.txt","xReact")
 # getDict("female_masked_subj.txt","xReact")
 
+# I probably should add xIntent, xWant, and xNeed to m/f_masked_subj.txt
+
 # getDict("male_two_and_above_subj.txt","oReact")
 # getDict("female_two_and_above_subj.txt","oReact")
 
 # getDict("male_two_and_above_obj.txt","oReact")
 # getDict("female_two_and_above_obj.txt","oReact")
 
+# ignore below
 # getDict("male_masked_subj.txt","motivation")
 # getDict("female_masked_subj.txt","motivation")
 # getDict("female_two_and_above_obj.txt")

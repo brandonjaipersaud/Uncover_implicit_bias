@@ -6,6 +6,7 @@ import nltk
 import spacy
 from nltk.stem import PorterStemmer
 from nltk.stem import WordNetLemmatizer
+from tqdm import tqdm
 
 nlp = spacy.load('en_core_web_lg')
 
@@ -21,6 +22,15 @@ def writeFile(file_name, content):
 
 
 def getPron(para):
+    """
+    Given a paragraph, returns a list of coreferent pronouns in the paragraph.
+    
+    Args:
+    para: str, the paragraph to search for coreferent pronouns
+    
+    Returns:
+    list: a list of coreferent pronouns in the paragraph
+    """
 
     output = predictor.predict(
         document=para
@@ -35,6 +45,16 @@ def getPron(para):
 
 
 def findSubj(li):
+    """
+    Given a list of token dependencies, returns True if the root of the sentence has a subject that is 
+    "protagonistA" or "ProtagonistA", and False otherwise.
+    
+    Args:
+    li: list of tuples, where each tuple contains information about a token's dependency
+    
+    Returns:
+    bool: True if the root of the sentence has a subject that is "protagonistA" or "ProtagonistA", and False otherwise.
+    """
     root = ""
     for i in li:
         if (i[1] == "ROOT"):
@@ -47,8 +67,22 @@ def findSubj(li):
 
 
 def process(inputf, outputf):
+    """
+    Processes the input file to extract and write sentences without a subject into a new output file.
+    
+    The function reads an input file line by line, tokenizes each sentence, tags it with POS tags,
+    and uses dependency parsing to check for the presence of a subject. Sentences without a subject 
+    are written into a specified output file.
+    
+    Parameters:
+    - inputf (str): Path to the input file that contains text to be processed.
+    - outputf (str): Base path for the output file where results will be written.
+    
+    The output file is appended with '_obj.txt' to denote the collection of object-centric sentences.
+    """
+
     f = open(inputf, "r")
-    for p in f.readlines():
+    for p in tqdm(f.readlines()):
         #         p = "i like hiking."
         p.replace("!", ".")
         p = p.strip("\n").split(".")
@@ -57,7 +91,6 @@ def process(inputf, outputf):
         for para in p:
             if (para == "\n" or para == ".\n"):
                 continue
-
             tokens = nltk.word_tokenize(para)
             tagged_sent = nltk.pos_tag(tokens)
             doc = nlp(para)
@@ -68,11 +101,14 @@ def process(inputf, outputf):
             flag = findSubj(token_dependencies)
 
             if (flag == True):
-
-                continue
+                if(len(para)>5):
+                    # write sentences where ProtagonistA is the subject to the file. Useful for xAttr ...
+                    writeFile(outputf + '_subj.txt', para)
+                # continue
             else:
+                # write sentences where ProtagonistB is the subject to the file. Useful for oAttr ...
                 if(len(para)>5):
                     writeFile(outputf + '_obj.txt', para)
 
-# process("male_two_and_above.txt","male_two_and_above")
+#process("male_two_and_above.txt","male_two_and_above")
 process("female_two_and_above.txt","female_two_and_above")

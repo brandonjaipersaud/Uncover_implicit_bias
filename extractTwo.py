@@ -1,6 +1,7 @@
 import nltk
 from nltk.tag.stanford import StanfordNERTagger
 from allennlp.predictors.predictor import Predictor
+from tqdm import tqdm
 
 predictor = Predictor.from_path(
     "https://storage.googleapis.com/allennlp-public-models/coref-spanbert-large-2020.02.27.tar.gz")
@@ -108,7 +109,7 @@ def writeFile(file_name, content):
 def process(inputf, outputf):
     f = open(inputf, "r")
     cnt = 0
-    for para in f.readlines():
+    for para in tqdm(f.readlines()):
         cnt += 1
         if (cnt % 100 == 0):
             print(cnt)
@@ -121,5 +122,5 @@ def process(inputf, outputf):
 
 test2 = " ProtagonistA was a junior , but ProtagonistA had a huge crush on ProtagonistB . ProtagonistA loved to write songs on ProtagonistA's guitar , so ProtagonistA wrote one just for ProtagonistB . Then , gathering ProtagonistA's nerve ProtagonistA played it for ProtagonistB during free period . ProtagonistB's face lit up at the emotion of ProtagonistA's song . ProtagonistB asked ProtagonistA for a date right then and there ! "
 
-process("male_masked.txt", "male")
-process("female_masked.txt", "female")
+# process("male_masked_2000.txt", "male")
+process("female_masked_2000.txt", "female")
